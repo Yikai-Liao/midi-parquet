@@ -940,7 +940,6 @@ dependencies = [
     { name = "plotext" },
     { name = "polars" },
     { name = "pyarrow" },
-    { name = "symusic" },
     { name = "tqdm" },
 ]
 
@@ -953,7 +952,6 @@ requires-dist = [
     { name = "plotext", specifier = ">=5.2.8" },
     { name = "polars", specifier = ">=1.30.0" },
     { name = "pyarrow", specifier = ">=20.0.0" },
-    { name = "symusic", directory = "symusic" },
     { name = "tqdm", specifier = ">=4.66.0" },
 ]
 
@@ -1377,15 +1375,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pysmartdl"
-version = "1.3.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5a/4c/ed073b2373f115094a4a612431abe25b58e542bebd951557dcc881999ef9/pySmartDL-1.3.4.tar.gz", hash = "sha256:35275d1694f3474d33bdca93b27d3608265ffd42f5aeb28e56f38b906c0c35f4", size = 21467 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ac/6a/582286ea74c54363cba30413214767904f0a239e12253c3817feaf78453f/pySmartDL-1.3.4-py3-none-any.whl", hash = "sha256:671c277ca710fb9b6603b19176f5c091041ec4ef6dcdb507c9a983a89ca35d31", size = 20000 },
-]
-
-[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1771,26 +1760,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695", size = 24521 },
 ]
-
-[[package]]
-name = "symusic"
-source = { directory = "symusic" }
-dependencies = [
-    { name = "numpy" },
-    { name = "platformdirs" },
-    { name = "pysmartdl" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "numpy" },
-    { name = "platformdirs" },
-    { name = "pysmartdl" },
-    { name = "pytest-cov", marker = "extra == 'test'" },
-    { name = "pytest-xdist", extras = ["psutil"], marker = "extra == 'test'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.8'" },
-]
-provides-extras = ["test"]
 
 [[package]]
 name = "terminado"

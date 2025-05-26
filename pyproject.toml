@@ -9,12 +9,8 @@ dependencies = [
     "jupyter>=1.1.1",
     "numpy>=2.2.6",
     "polars>=1.30.0",
-    "symusic>=0.5.8",
     "tqdm>=4.66.0",
     "plotext>=5.2.8",
     "pyarrow>=20.0.0",
     "pandas>=2.2.3",
 ]
-
-[tool.uv.sources]
-symusic = { path = "symusic" }
