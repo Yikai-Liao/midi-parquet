@@ -53,7 +53,12 @@ def extract_midi_from_tar(tar_path: Path) -> List[Tuple[str, str, bytes, int]]:
     except Exception as e:
         print(f"错误: 无法打开 tar 文件 {tar_path}: {e}")
     
-    return results
+    return pl.DataFrame(results, schema={
+        'group': pl.Utf8,
+        'file_name': pl.Utf8,
+        'content': pl.Binary,
+        'file_size': pl.Int64
+    }, orient="row")
 
 
 def extract_midi_from_zip(zip_path: Path) -> List[Tuple[str, str, bytes, int]]:
@@ -77,8 +82,12 @@ def extract_midi_from_zip(zip_path: Path) -> List[Tuple[str, str, bytes, int]]:
     except Exception as e:
         print(f"错误: 无法打开 zip 文件 {zip_path}: {e}")
     
-    return results
-
+    return pl.DataFrame(results, schema={
+        'group': pl.Utf8,
+        'file_name': pl.Utf8,
+        'content': pl.Binary,
+        'file_size': pl.Int64
+    }, orient="row")
 
 def process_single_archive(archive: Path) -> List[Tuple[str, str, bytes, int]]:
     """处理单个压缩包文件 - 用于多进程"""
@@ -184,13 +193,7 @@ def process_archives(archives: List[Path], max_workers: int = None) -> pl.DataFr
             archive = future_to_archive[future]
             try:
                 results = future.result()
-                for group, file_name, content, file_size in results:
-                    data.append({
-                        'group': group,
-                        'file_name': file_name,
-                        'content': content,
-                        'file_size': file_size
-                    })
+                data.append(results)
             except Exception as e:
                 print(f"处理 {archive} 时出错: {e}")
     
@@ -201,10 +204,9 @@ def process_archives(archives: List[Path], max_workers: int = None) -> pl.DataFr
             'file_name': pl.Utf8,
             'content': pl.Binary,
             'file_size': pl.Int64
-        })
+        }, orient="row")
     
-    return pl.DataFrame(data)
-
+    return pl.concat(data, rechunk=True)
 
 def save_to_parquet(df: pl.DataFrame, output_path: str) -> None:
     """将DataFrame保存为按group分区的parquet文件，开启最高压缩"""
@@ -225,7 +227,7 @@ def save_to_parquet(df: pl.DataFrame, output_path: str) -> None:
         compression='zstd',  # 使用zstd压缩，通常比gzip更好
         compression_level=22,  # 最高压缩级别
         use_pyarrow=True,
-        partition_by='group'
+        row_group_size=10000,
     )
     
     print(f"成功保存 {df.height} 条记录到 {output_path}")
