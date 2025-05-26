@@ -13,6 +13,7 @@ dependencies = [
     "tqdm>=4.66.0",
     "plotext>=5.2.8",
     "pyarrow>=20.0.0",
+    "pandas>=2.2.3",
 ]
 
 [tool.uv.sources]
