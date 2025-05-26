@@ -220,14 +220,11 @@ def save_to_parquet(df: pl.DataFrame, output_path: str) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     print(f"保存数据到 {output_path}")
-    
+    df = df.drop('file_size')  # 删除file_size列，因为不需要保存到parquet中
     # 使用最高压缩级别保存，按group分区
     df.write_parquet(
         output_path,
-        compression='zstd',  # 使用zstd压缩，通常比gzip更好
-        compression_level=22,  # 最高压缩级别
-        use_pyarrow=True,
-        row_group_size=10000,
+        statistics=False
     )
     
     print(f"成功保存 {df.height} 条记录到 {output_path}")
